@@ -1,0 +1,564 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Free Multi-Node Range & Data Slider: jQSlider</title>
+    <script src="jquery-1.4.4.min.js" type="text/javascript"></script>
+    <script src="jqslider.js" type="text/javascript"></script>
+    <link href="jqslider.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+
+        var tableData;
+        var startValue = 3;
+        var endValue = 5;
+
+        $(document).ready(function () {
+            //copy data
+            tableData = $('<table/>');
+            $('#demo-data tbody tr').each(function (index) {
+                tableData.append($(this).clone());
+            });
+            var sliderContainer = $('#demo-slider-container');
+            sliderContainer.html('');
+            var sl = $('<div/>').attr('id', 'default');
+            sliderContainer.append(sl);
+            sl.jqslider({ rangeSelection: true, theme: 'default', selStart: startValue, selEnd: endValue, ticks: true, minValue: 1, maxValue: 20, callback: onSlide });
+
+            $('#tabs li').click(function () {
+                $(this).removeClass('selected-tab');
+                var theme = $(this).attr('class');
+                $(this).addClass('selected-tab');
+
+                sliderContainer.html('');
+                var sl = $('<div/>').attr('id', '' + $(this).attr('id') + '');
+                sliderContainer.append(sl);
+                sl.jqslider({ rangeSelection: true, theme: "" + theme + "", selStart: startValue, selEnd: endValue, ticks: true, minValue: 1, maxValue: 20, callback: onSlide });
+
+            }).hover(function () {
+                $(this).addClass('selected-tab');
+            }, function () {
+                $(this).removeClass('selected-tab');
+            });
+
+        });
+        function onSlide(selectionStart, SelectionEnd) {
+            //$('#text').html(selectionStart);
+            startValue = selectionStart;
+            endValue = SelectionEnd;
+            $('#demo-data tbody tr').remove();
+            if (tableData != null) {
+                tableData.find('tr').each(function (index) {
+
+                    var id = parseInt($(this).find('td:eq(0)').html());
+                    if (id >= parseInt(selectionStart) && id <= parseInt(SelectionEnd)) {
+                        $('#demo-data tbody').append($(this).clone());
+                    }
+                });
+            }
+        }
+             
+    </script>
+    <style type="text/css">
+        #demo
+        {
+            width: 800px;
+            margin: auto;
+        }
+        #demo #tabs
+        {
+            margin: 0;
+            padding: 0;
+        }
+        #demo #tabs li
+        {
+            display: inline-block;
+            float: left;
+            width: 90px;
+            cursor: pointer;
+            background-color: #FBFBFB;
+            background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#FBFBFB), to(#E1E2E3));
+            background-image: -moz-linear-gradient(#FBFBFB, #E1E2E3);
+            background-image: -webkit-linear-gradient(#FBFBFB, #E1E2E3);
+            background-image: -o-linear-gradient(#FBFBFB, #E1E2E3);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FBFBFB', endColorstr='#E1E2E3',GradientType=0 );
+            border: solid 1px #CFCFCF;
+            text-align: center;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        .selected-tab
+        {
+            background: none !important;
+            background-color: #FFFFFF !important;
+            background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#FFFFFF), to(#FFFFFF)) !important;
+            background-image: -moz-linear-gradient(#FFFFFF, #FFFFFF) !important;
+            background-image: -webkit-linear-gradient(#FFFFFF, #FFFFFF) !important;
+            background-image: -o-linear-gradient(#FFFFFF, #FFFFFF) !important;
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFFFF', endColorstr='#FFFFFF',GradientType=0 ) !important;
+        }
+        .clear
+        {
+            clear: both;
+        }
+        #tabs-container > div
+        {
+            padding: 50px;
+            border: solid 1px #CFCFCF; /*height: 400px;*/
+        }
+        #demo-data
+        {
+            margin-top: 20px;
+            width: 100%;
+            font-size: 12px;
+        }
+        #demo-data th
+        {
+            background-color: #FBFBFB;
+            background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#FBFBFB), to(#E1E2E3));
+            background-image: -moz-linear-gradient(#FBFBFB, #E1E2E3);
+            background-image: -webkit-linear-gradient(#FBFBFB, #E1E2E3);
+            background-image: -o-linear-gradient(#FBFBFB, #E1E2E3);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FBFBFB', endColorstr='#E1E2E3',GradientType=0 );
+            border: solid 1px #CFCFCF;
+            font-weight: bold;
+            font-size: 12px;
+            text-align: left;
+            padding: 4px;
+        }
+        #demo-data td
+        {
+            padding: 4px;
+            border: solid 1px #CFCFCF;
+        }
+    </style>
+</head>
+<body>
+    <div id="demo">
+        <ul id="tabs">
+            <li id="1" class="default">Default</li>
+            <li id="2" class="simple">Simple</li>
+            <li id="3" class="blue">Blue</li>
+            <li id="4" class="steel">Steel</li>
+            <li id="5" class="green">Green</li>
+            <li id="6" class="dark-green">Dark Green</li>
+            <li id="7" class="orange">Orange</li>
+            <li id="8" class="red">Red</li>
+        </ul>
+        <div class="clear">
+        </div>
+        <div id="tabs-container">
+            <div class="1">
+                <div id="demo-slider-container">
+                </div>
+                <div class="clear">
+                </div>
+                <table id="demo-data" cellpadding="0" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>
+                                ID
+                            </th>
+                            <th>
+                                Product
+                            </th>
+                            <th>
+                                Category
+                            </th>
+                            <th>
+                                Quanity Per Uni
+                            </th>
+                            <th>
+                                Unit Price
+                            </th>
+                            <th>
+                                Units in Stock
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                1
+                            </td>
+                            <td>
+                                Chai
+                            </td>
+                            <td>
+                                Beverages
+                            </td>
+                            <td>
+                                10 boxes x 20 bags
+                            </td>
+                            <td>
+                                $18.00
+                            </td>
+                            <td>
+                                39
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                2
+                            </td>
+                            <td>
+                                Chang
+                            </td>
+                            <td>
+                                Beverages
+                            </td>
+                            <td>
+                                24 - 12 oz bottles
+                            </td>
+                            <td>
+                                $19.00
+                            </td>
+                            <td>
+                                17
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                3
+                            </td>
+                            <td>
+                                Aniseed Syrup
+                            </td>
+                            <td>
+                                Condiments
+                            </td>
+                            <td>
+                                12 - 550 ml bottles
+                            </td>
+                            <td>
+                                $10.00
+                            </td>
+                            <td>
+                                13
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                4
+                            </td>
+                            <td>
+                                Chef Anton's Cajun Seasoning
+                            </td>
+                            <td>
+                                Condiments
+                            </td>
+                            <td>
+                                48 - 6 oz jars
+                            </td>
+                            <td>
+                                $22.00
+                            </td>
+                            <td>
+                                53
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                5
+                            </td>
+                            <td>
+                                Grandma's Boysenberry Spread
+                            </td>
+                            <td>
+                                Condiments
+                            </td>
+                            <td>
+                                12 - 8 oz jars
+                            </td>
+                            <td>
+                                $25.00
+                            </td>
+                            <td>
+                                120
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                6
+                            </td>
+                            <td>
+                                Uncle Bob's Organic Dried Pears
+                            </td>
+                            <td>
+                                Produce
+                            </td>
+                            <td>
+                                12 - 1 lb pkgs.rrr
+                            </td>
+                            <td>
+                                $30.00
+                            </td>
+                            <td>
+                                15
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                7
+                            </td>
+                            <td>
+                                Northwoods Cranberry Sauce
+                            </td>
+                            <td>
+                                Condiments
+                            </td>
+                            <td>
+                                12 - roz jarsrr
+                            </td>
+                            <td>
+                                $40.00
+                            </td>
+                            <td>
+                                6
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                8
+                            </td>
+                            <td>
+                                Ikura
+                            </td>
+                            <td>
+                                Seafood
+                            </td>
+                            <td>
+                                12 - 200 ml jars
+                            </td>
+                            <td>
+                                $31.00
+                            </td>
+                            <td>
+                                31
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                9
+                            </td>
+                            <td>
+                                Queso Cabrales
+                            </td>
+                            <td>
+                                Dairy Products
+                            </td>
+                            <td>
+                                1 kg pkg.
+                            </td>
+                            <td>
+                                $21.00
+                            </td>
+                            <td>
+                                22
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                10
+                            </td>
+                            <td>
+                                Queso Manchego La Pastora
+                            </td>
+                            <td>
+                                Dairy Products
+                            </td>
+                            <td>
+                                10 - 500 g pkgs.
+                            </td>
+                            <td>
+                                $38.00
+                            </td>
+                            <td>
+                                86
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                11
+                            </td>
+                            <td>
+                                Konbu
+                            </td>
+                            <td>
+                                Seafood
+                            </td>
+                            <td>
+                                2 kg box
+                            </td>
+                            <td>
+                                $6.00
+                            </td>
+                            <td>
+                                24
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                12
+                            </td>
+                            <td>
+                                Tofu
+                            </td>
+                            <td>
+                                Produce
+                            </td>
+                            <td>
+                                40 - 100 g pkgs.
+                            </td>
+                            <td>
+                                $23.25
+                            </td>
+                            <td>
+                                35
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                13
+                            </td>
+                            <td>
+                                Genen Shouyu
+                            </td>
+                            <td>
+                                Condiments
+                            </td>
+                            <td>
+                                24 - 250 ml bottles
+                            </td>
+                            <td>
+                                $15.50
+                            </td>
+                            <td>
+                                39
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                14
+                            </td>
+                            <td>
+                                Pavlova
+                            </td>
+                            <td>
+                                Confections
+                            </td>
+                            <td>
+                                32 - 500 g boxes
+                            </td>
+                            <td>
+                                $17.45
+                            </td>
+                            <td>
+                                29
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                15
+                            </td>
+                            <td>
+                                Carnarvon Tigers
+                            </td>
+                            <td>
+                                Seafood
+                            </td>
+                            <td>
+                                16 kg pkg.
+                            </td>
+                            <td>
+                                $62.50
+                            </td>
+                            <td>
+                                42
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                16
+                            </td>
+                            <td>
+                                Teatime Chocolate Biscuits
+                            </td>
+                            <td>
+                                Confections
+                            </td>
+                            <td>
+                                10 boxes x 12 pieces
+                            </td>
+                            <td>
+                                $9.20
+                            </td>
+                            <td>
+                                25
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                17
+                            </td>
+                            <td>
+                                Sir Rodney's Marmalade
+                            </td>
+                            <td>
+                                Confections
+                            </td>
+                            <td>
+                                30 gift boxes
+                            </td>
+                            <td>
+                                $81.00
+                            </td>
+                            <td>
+                                40
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                18
+                            </td>
+                            <td>
+                                Sir Rodney's Scones
+                            </td>
+                            <td>
+                                Confections
+                            </td>
+                            <td>
+                                24 pkgs. x 4 pieces
+                            </td>
+                            <td>
+                                $10.00
+                            </td>
+                            <td>
+                                3
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                19
+                            </td>
+                            <td>
+                                Gustaf's Knäckebröd
+                            </td>
+                            <td>
+                                Grains/Cereals
+                            </td>
+                            <td>
+                                24 - 500 g pkgs.
+                            </td>
+                            <td>
+                                $21.00
+                            </td>
+                            <td>
+                                104
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+   </body>
+</html>
